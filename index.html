@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOL 选股追踪</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{--bg:#faf8f3;--card:#fff;--ink:#1d1d1f;--mut:#6b6b6b;--line:#e8e4db;
+        --up:#16a34a;--down:#dc2626;--hl:#fef9c3;--accent:#0f766e;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.5;padding:20px;max-width:1200px;margin:0 auto}
+  h1{font-size:24px;margin-bottom:4px}
+  .sub{color:var(--mut);font-size:13px;margin-bottom:18px}
+  nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  nav button{padding:8px 16px;border:1px solid var(--line);background:var(--card);
+             border-radius:20px;cursor:pointer;font-size:14px;color:var(--ink)}
+  nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+        padding:16px;margin-bottom:16px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase}
+  tr.consensus{background:var(--hl)}
+  .tk{font-weight:700;font-size:15px}
+  .up{color:var(--up);font-weight:600}
+  .down{color:var(--down);font-weight:600}
+  .pill{display:inline-block;background:#f0ede6;border-radius:10px;padding:1px 8px;
+        font-size:12px;margin:1px 2px}
+  .bar{height:6px;background:var(--accent);border-radius:3px;display:inline-block;vertical-align:middle}
+  .spark{width:120px;height:40px}
+  .logic{color:var(--mut);font-size:13px;max-width:280px}
+  .expand{color:var(--accent);cursor:pointer;font-size:12px;user-select:none}
+  .tweets{display:none;margin-top:8px;font-size:12px;color:var(--mut)}
+  .tweets.open{display:block}
+  .tweets a{color:var(--accent)}
+  .tw{padding:6px 0;border-top:1px dashed var(--line)}
+  .kolbar{margin:4px 0}
+  .kolbar .lab{display:inline-block;width:70px;font-size:13px}
+  .err{color:var(--down);font-size:12px;margin-bottom:10px}
+  .kol-link{color:var(--accent);cursor:pointer}
+</style>
+</head>
+<body>
+  <h1>KOL 选股追踪</h1>
+  <div class="sub" id="updated">加载中…</div>
+  <div class="err" id="errline"></div>
+  <nav id="nav"></nav>
+  <div id="view"></div>
+<script src="app.js"></script>
+</body>
+</html>
