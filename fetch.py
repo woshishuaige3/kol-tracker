@@ -22,17 +22,29 @@ def get_tweets(handle):
         print("  [警告] 没有 TWITTER_API_KEY，跳过抓取")
         return []
     base = "https://api.twitterapi.io/twitter/user/last_tweets"
-    params = urllib.parse.urlencode({"userName": handle, "count": TWEETS_PER_KOL})
+    params = urllib.parse.urlencode({"userName": handle})
     url = base + "?" + params
     req = urllib.request.Request(url, headers={"X-API-Key": TWITTER_API_KEY})
+
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
             data = json.loads(resp.read().decode("utf-8"))
     except Exception as e:
         print(f"  [错误] 抓 {handle} 失败：{e}")
         return []
+
+    # 真实返回里推文可能在 data["tweets"] 或嵌套在 data["data"]["tweets"]
+    raw_list = []
+    if isinstance(data.get("tweets"), list):
+        raw_list = data["tweets"]
+    elif isinstance(data.get("data"), dict) and isinstance(data["data"].get("tweets"), list):
+        raw_list = data["data"]["tweets"]
+    elif isinstance(data.get("data"), list):
+        raw_list = data["data"]
+
     tweets = []
-    raw_list = data.get("tweets") or data.get("data") or []
+    # 只保留真正的 tweet 对象（跳过偶尔混进来的字符串）
+    raw_list = [t for t in raw_list if isinstance(t, dict)]
     for t in raw_list:
         text = t.get("text", "")
         tid = str(t.get("id", ""))
